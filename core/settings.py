@@ -1,15 +1,21 @@
-# مسیر: core/settings.py
 from pathlib import Path
 from decouple import config
+import dj_database_url
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# کلید محرمانه و حالت دیباگ از فایل .env خوانده می‌شوند
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-default-key-for-dev')
 
-# ALLOWED_HOSTS را می‌توانید در .env مدیریت کنید
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config('DEBUG', default=True, cast=bool)
+ALLOWED_HOSTS = ['mahannarani18.pythonanywhere.com']
+
+ALLOWED_HOSTS = []
+
+
+# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -17,7 +23,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',  # باید قبل از WhiteNoise باشد
+    'django.contrib.staticfiles',
+
     # My Apps
     'accounts.apps.AccountsConfig',
     'profiles.apps.ProfilesConfig',
@@ -33,6 +40,7 @@ INSTALLED_APPS = [
     'tasks.apps.TasksConfig',
     'alumni.apps.AlumniConfig',
     'kitchen.apps.KitchenConfig',
+
     # 3rd Party Apps
     'rest_framework',
     'rest_framework.authtoken',
@@ -42,7 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -72,16 +80,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='smart_school_db'),
-        'USER': config('DB_USER', default='postgres'),
-        'PASSWORD': config('DB_PASSWORD', default=''),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='5432'),
+        'ENGINE': 'django.db.backends.mysql',      # <-- تغییر کرد
+        'NAME': 'mahannarani18$default', # <-- نام دیتابیس MySQL خود را وارد کنید
+        'USER': 'mahannarani18',          # <-- نام کاربری PythonAnywhere شما
+        'PASSWORD': '@Aa123456789',      # <-- رمزی که برای MySQL تعیین کردید
+        'HOST': 'mahannarani18.mysql.pythonanywhere-services.com', # <-- آدرس هاست شما
+        'PORT': '3306',
     }
 }
+# Password validation
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -90,20 +104,42 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+
+# Internationalization
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
+
 LANGUAGE_CODE = 'fa-ir'
 TIME_ZONE = 'Asia/Tehran'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = '/static/'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
+
+STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+# Media files (User uploaded files)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom User Model
 AUTH_USER_MODEL = 'accounts.User'
 
+# Django REST Framework Settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -113,11 +149,5 @@ REST_FRAMEWORK = {
     ],
 }
 
+# CORS Settings
 CORS_ALLOW_ALL_ORIGINS = True
-
-# تنظیمات WhiteNoise برای مدیریت فایل‌های استاتیک
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
