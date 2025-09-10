@@ -86,12 +86,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',      # <-- تغییر کرد
-        'NAME': 'mahannarani18$default', # <-- نام دیتابیس MySQL خود را وارد کنید
-        'USER': 'mahannarani18',          # <-- نام کاربری PythonAnywhere شما
-        'PASSWORD': '@Aa123456789',      # <-- رمزی که برای MySQL تعیین کردید
-        'HOST': 'mahannarani18.mysql.pythonanywhere-services.com', # <-- آدرس هاست شما
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'elizabeth',
+        'USER': 'postgres',
+        'PASSWORD': 'CDv4qWoDEqh9xReZ',
+        'HOST': 'services.irn13.chabokan.net',
+        'PORT': '16669',
     }
 }
 # Password validation
